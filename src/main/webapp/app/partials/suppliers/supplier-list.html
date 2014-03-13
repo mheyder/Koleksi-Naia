@@ -1,0 +1,28 @@
+<div class="container theme-showcase" role="main">
+  <h2 class="page-header">Suppliers</h2>
+  
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Supplier Name</th>
+          <th>Contact Person</th>
+          <th>Phone</th>
+          <th>Bbm</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="supplier in suppliers">
+          <td><a href="#/suppliers/{{supplier.id}}">{{supplier.id | uppercase}}</a></td>
+          <td>{{supplier.name}}</td>
+          <td>{{supplier.contactPerson}}</td>
+          <td>{{supplier.phone}}</td>
+          <td>{{supplier.bbm}}</td>
+        </tr>                
+      </tbody>
+    </table>
+  </div>
+  
+  <a href="#/suppliers/create" class="btn btn-primary">New Supplier</a>
+</div>

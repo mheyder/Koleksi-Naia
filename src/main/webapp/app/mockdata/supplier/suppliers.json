@@ -1,0 +1,26 @@
+[
+    {
+        "id": "jne",
+        "name": "JNE",
+        "uncollectedOrder": 0,
+        "unpaidOrder": 0
+    }, 
+    {
+        "id": "pink",
+        "name": "PINK",
+        "uncollectedOrder": 5,
+        "unpaidOrder": 5
+    }, 
+    {
+        "id": "sr", 
+        "name": "Strawberry",
+        "uncollectedOrder": 2,
+        "unpaidOrder": 0
+    },
+    {
+        "id": "ayud", 
+        "name": "Ayudiah",
+        "uncollectedOrder": 0,
+        "unpaidOrder": 0
+    }
+]

@@ -1,0 +1,28 @@
+<div class="container theme-showcase" role="main">
+  <h1 class="page-header">Payment and Shipping</h1>
+  
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Name</th>
+          <th>Active Order</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="customer in customers">
+          <td><a href="#/payment-shipping/{{customer.id}}">{{customer.id}}</a></td>
+          <td>{{customer.name}}</td>
+          <td>{{customer.activeOrder}}</td>
+        </tr>                
+      </tbody>
+    </table>
+  </div>
+ 
+  <!--TODO: delete -->
+  <div class="well">
+    <p>temp
+    <p>only showing list of customer that have pending orders (not ready, unpaid and unsent)
+  </div>
+</div>

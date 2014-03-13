@@ -1,0 +1,59 @@
+<div class="container theme-showcase" role="main">
+
+  <h2 class="page-header">Create Orders <small><a href="#/orders/search">search order</a></small></h2>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Customer</th>
+          <th>Dropship</th>
+          <th>Supplier</th>
+          <th>Item</th>
+          <th>Colour</th>
+          <th>Cost</th>
+          <th>Price</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="order in newOrders">
+          <td>
+            <div class="input-append date" id="dp3" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
+              <input class="span2" size="16" type="text" value="12-02-2012">
+              <span class="add-on"><i class="icon-th"></i></span>
+            </div>
+          </td>
+          <td><input ng-model="order.customer"></td>
+          <td><input ng-model="order.dropship"></td>
+          <td><input ng-model="order.supplier"></td>
+          <td><input ng-model="order.item"></td>
+          <td><input ng-model="order.colour"></td>
+          <td><input ng-model="order.cost"></td>
+          <td><input ng-model="order.price"></td>
+          <td><a ng-click="deleteRow(order)"><span class="glyphicon glyphicon-remove"></span></a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <form class="form-horizontal" role="form">
+    <div class="form-group">
+      <div class="col-sm-6"><a ng-click="addRow()" class="btn btn-info">Add row</a></div>
+      <div class="col-sm-6"><a href="#/orders/search" class="btn btn-success pull-right">Create Orders</a></div>
+    </div>
+  </form>
+  
+  
+  <!-- will be deleted -->
+  <br>
+  <div class="well">
+    <p>Temp!
+    <p>
+    <p>json: {{newOrders | json}}</p>
+    <p>
+    <p>- on page load: request customerId list and supplierId list</p>
+    <p>- create button click: 1. validate the orders, 2. send to server, 3. </p>
+    <p>                       </p>
+  </div>
+</div>

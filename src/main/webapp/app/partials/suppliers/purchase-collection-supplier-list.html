@@ -1,0 +1,25 @@
+<div class="container theme-showcase" role="main">
+  <h1 class="page-header">Purchase and Collection</h1>
+
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Supplier Name</th>
+          <th>Uncollected Order</th>
+          <th>Unpaid Order</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="supplier in suppliers">
+          <td><a href="#/purchase-collection/{{supplier.id}}">{{supplier.id}}</a></td>
+          <td>{{supplier.name}}</td>
+          <td>{{supplier.uncollectedOrder}}</td>
+          <td>{{supplier.unpaidOrder}}</td>
+        </tr>                
+      </tbody>
+    </table>
+  </div>
+  
+</div>

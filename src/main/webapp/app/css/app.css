@@ -1,0 +1,13 @@
+/* app css stylesheet */
+body {
+  padding-top: 40px;
+  padding-bottom: 30px;
+}
+
+.button-dashboard-half {
+  width: 49%;
+}
+
+.button-dashboard-full {
+  width: 100%;
+}

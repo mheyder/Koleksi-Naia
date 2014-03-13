@@ -1,0 +1,58 @@
+<div class="container theme-showcase" role="main">
+  <h2 class="page-header">{{pageHeader}}</h2>
+  
+  <div ng-class="alert.type" ng-show="alert.exist">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    <strong>{{alert.msg}}</strong>
+  </div>
+  
+  <form class="form-horizontal" role="form">
+    <div class="form-group">
+      <label for="inputId" class="col-sm-2 control-label">Id</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" ng-model="supplier.id" id="inputId" ng-disabled="isIdDisable">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputName" class="col-sm-2 control-label">Name</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" ng-model="supplier.name" id="inputName">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputCP" class="col-sm-2 control-label">Contact Person</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" ng-model="supplier.contactPerson" id="inputCP">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputPhone" class="col-sm-2 control-label">Phone</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" ng-model="supplier.phone" id="inputPhone">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputBbm" class="col-sm-2 control-label">Bbm</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" ng-model="supplier.bbm" id="inputBbm">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputInfo" class="col-sm-2 control-label">Additional Information</label>
+      <div class="col-sm-10">
+        <textarea class="form-control" rows="3" ng-model="supplier.info" id="inputInfo"></textarea>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <a ng-click="saveSupplier()" class="btn btn-success">Save</a>
+      </div>
+    </div>
+  </form>
+  
+  <div class="well">
+  	<p>temp
+    <p>json: {{supplier | json}}
+  </div>
+  
+</div>
