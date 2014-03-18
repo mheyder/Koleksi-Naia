@@ -6,6 +6,15 @@ var koleksiNaiaServices = angular.module('koleksiNaia.services', ['ngResource'])
 
 koleksiNaiaServices.value('version', '0.1');
 
+koleksiNaiaServices.factory('Order', ['$resource',
+ function($resource){
+   return $resource('../rest/orders/:orderId', {}, {
+     query: {method:'GET', isArray:true},
+     create: {method:'POST'},
+     update: {method:'PUT'}
+   });
+ }]);
+
 koleksiNaiaServices.factory('Customer', ['$resource',
   function($resource){
     return $resource('../rest/customers/:customerId', {}, {

@@ -20,10 +20,8 @@ public class SupplierServiceImpl implements SupplierService {
 	private SupplierDao supplierDao;
 
 	@Override
-	public Supplier findBySupplierId(String id) {
-		Supplier suppliers = supplierDao.findOne(id);
-		
-		return suppliers;
+	public Supplier findBySupplierId(String id) {		
+		return supplierDao.findOne(id);
 	}
 
 	@Override

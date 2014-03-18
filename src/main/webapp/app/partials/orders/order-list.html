@@ -54,15 +54,15 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>07/03/24</td>
-          <td>Ati</td>
-          <td>Teddy</td>
-          <td>SR</td>
-          <td>R1123 batwing</td>
-          <td>green</td>
-          <td>50</td>
-          <td>62</td>
+        <tr ng-repeat="order in orders">
+          <td>{{order.date}}</td>
+          <td>{{order.customer.id}}</td>
+          <td>{{order.dropship}}</td>
+          <td>{{order.supplier.id}}</td>
+          <td>{{order.itemName}}</td>
+          <td>{{order.itemType}}</td>
+          <td>{{order.cost}}</td>
+          <td>{{order.price}}</td>
           <td>v</td>
           <td>v</td>
           <td>v</td>

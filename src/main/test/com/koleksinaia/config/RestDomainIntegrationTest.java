@@ -86,5 +86,47 @@ public class RestDomainIntegrationTest {
 	            .andExpect(status().isOk())
 	            .andExpect(jsonPath("$[0].id").value(CUSTOMER_1_ID));
 
-	  }
+	}
+	
+	@Test
+	public void testOrderDomain() throws Exception  {
+		// add new customer
+		this.mockMvc.perform(
+				post("/customers")
+					.content(standardCustomerJSON())
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON))
+	            .andExpect(status().isCreated());
+		// add new supplier
+		this.mockMvc.perform(
+				post("/suppliers")
+					.content(standardSupplierJSON())
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON))
+	            .andExpect(status().isCreated());
+		// add new customer
+		this.mockMvc.perform(
+				post("/orders")
+					.content(standardOrdersJSON())
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON))
+	            .andExpect(status().isCreated());
+		// get suppliers list
+	    this.mockMvc.perform(
+	            get("/suppliers")
+	                    .accept(MediaType.APPLICATION_JSON))
+	            .andExpect(status().isOk())
+	            .andExpect(jsonPath("$[0].id").value(SUPPLIER_1_ID));
+	    // get customers list
+	    this.mockMvc.perform(
+	            get("/customers")
+	                    .accept(MediaType.APPLICATION_JSON))
+	            .andExpect(status().isOk())
+	            .andExpect(jsonPath("$[0].id").value(CUSTOMER_1_ID));
+		this.mockMvc.perform(
+	            get("/orders")
+	                    .accept(MediaType.APPLICATION_JSON))
+	            .andExpect(status().isOk())
+	            .andExpect(jsonPath("$[0].itemName").value(ORDER_1_ITEM));
+	}
 }

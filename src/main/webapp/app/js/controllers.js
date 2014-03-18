@@ -9,17 +9,61 @@ koleksiNaiaControllers.controller('DashboardCtrl', [
   }]);
   
 // ***** ORDERS *****
-koleksiNaiaControllers.controller('OrderCreateCtrl', ['$scope',
-  function($scope) {
-    $scope.newOrders = [{}];
+koleksiNaiaControllers.controller('OrderListCtrl', ['$scope', 'Order',
+  function($scope, Order) {
+    $scope.orders = Order.query();
+  }]);
+
+koleksiNaiaControllers.controller('OrderCreateCtrl', ['$scope', '$http', 'Order', 'Supplier', 'Customer',
+  function($scope, $http, Order, Supplier, Customer) {
+    $scope.suppliers = Supplier.query();
+    $scope.customers = Customer.query();
+    $scope.newOrders = [{date: new Date()}];
+    $scope.maxDate = new Date();
     
+    //****************
+    //$scope.selected = undefined;
+    $scope.getLocation = function(val) {
+        return $http.get('http://maps.googleapis.com/maps/api/geocode/json', {
+          params: {
+            address: val,
+            sensor: false
+          }
+        }).then(function(res){
+          var addresses = [];
+          angular.forEach(res.data.results, function(item){
+            addresses.push(item.formatted_address);
+          });
+          return addresses;
+        });
+      };
+    //****************
+    $scope.closeAlert = function(index) {
+      $scope.alerts.splice(index, 1);
+    };
     $scope.addRow = function() {
-      $scope.newOrders.push({});
+      $scope.newOrders.push({date: new Date()});
     };
     
     $scope.deleteRow = function(order) {
       $scope.newOrders.splice( $scope.newOrders.indexOf(order), 1 );
     };
+
+    $scope.saveOrders = function() {
+      $scope.submitted = true;
+      if ($scope.createOrdersForm.$valid) {	
+        Order.create($scope.newOrders, 
+          function(){
+  	        $scope.alerts = [{ type: 'success', msg: 'Orders successfully created.' }];
+  	        $scope.newOrders = [{date: new Date()}];
+          },
+          function(err){
+      	    $scope.alerts = [{ type: 'danger', msg: 'Failed. Error:' + err.status}];
+        });
+      } else {
+    	  $scope.alerts = [{ type: 'danger', msg: 'Please filled the required inputs'}];
+      };
+    }; 
   }]);
 
 koleksiNaiaControllers.controller('OrderDetailCtrl', [
@@ -41,20 +85,19 @@ koleksiNaiaControllers.controller('CustCreateCtrl', ['$scope', '$window', 'Custo
 	$scope.pageHeader = "New Customer";
     $scope.isIdDisable = false;
     $scope.customer = {};
-    $scope.alert = {"exist":"false"};
+    
+    $scope.closeAlert = function(index) {
+      $scope.alerts.splice(index, 1);
+    };
                                                                                                         
     $scope.saveCustomer = function() {
       Customer.create($scope.customer, 
         function(){
-    	  $scope.alert = {"type":"alert alert-success alert-dismissable", 
-    			          "msg":"Customer successfully created.", 
-    			          "exist":"true"};
+    	  $scope.alerts = [{ type: 'success', msg: 'Customer successfully created.' }];
     	  $scope.customer = {};
         },
         function(err){
-        	$scope.alert = {"type":"alert alert-danger alert-dismissable", 
-                            "msg":"Failed. Error: "+ err.status, 
-                            "exist":"true"};
+        	$scope.alerts = [{ type: 'danger', msg: 'Failed. Error:' + err.status}];
         });
     };   
   }]);
@@ -64,9 +107,9 @@ koleksiNaiaControllers.controller('CustOrderCtrl', [
   }]);
   
 // *CUST: customer EDIT controller
-koleksiNaiaControllers.controller('CustEditCtrl', ['$scope', '$route', '$window', 'Customer',
-  function($scope, $route, $window, Customer) {
-	Customer.get({customerId:$route.current.params.customerId},
+koleksiNaiaControllers.controller('CustEditCtrl', ['$scope', '$routeParams', '$window', 'Customer',
+  function($scope, $routeParams, $window, Customer) {
+	Customer.get({customerId:$routeParams.customerId},
       function(customerData) {
         $scope.customer = customerData;
       },
@@ -75,21 +118,20 @@ koleksiNaiaControllers.controller('CustEditCtrl', ['$scope', '$route', '$window'
       });
     $scope.pageHeader = "Edit Customer";
     $scope.isIdDisable = true;
-    $scope.alert = {"exist":"false"};
+    
+    $scope.closeAlert = function(index) {
+      $scope.alerts.splice(index, 1);
+    };
 		    
     $scope.saveCustomer = function() {
       Customer.update({customerId:$scope.customer.id}, $scope.customer, 
         function(){
-          $scope.alert = {"type":"alert alert-success alert-dismissable", 
-        		          "msg":"Save customer succeed.", 
-        		          "exist":"true"};
-          },
-          function(err){
-            $scope.alert = {"type":"alert alert-danger alert-dismissable", 
-            		        "msg":"Failed. Error: "+ err.status, 
-            		        "exist":"true"};
-		  });
-        };
+    	  $scope.alerts = [{ type: 'success', msg: 'Customer successfully updated.' }];
+        },
+        function(err){
+          $scope.alerts = [{ type: 'danger', msg: 'Failed. Error:' + err.status}];
+		});
+      };
   }]);
 
 // ***** SUPPLIER *****
@@ -106,28 +148,27 @@ koleksiNaiaControllers.controller('SuppCreateCtrl', ['$scope', '$window', 'Suppl
 	$scope.pageHeader = "New Supplier";
 	$scope.isIdDisable = false;
     $scope.supplier = {};
-    $scope.alert = {"exist":"false"};
+    
+    $scope.closeAlert = function(index) {
+      $scope.alerts.splice(index, 1);
+    };
                                                                                                         
     $scope.saveSupplier = function() {
       Supplier.create($scope.supplier, 
         function(){
-    	  $scope.alert = {"type":"alert alert-success alert-dismissable", 
-    			          "msg":"Supplier successfully created.", 
-    			          "exist":"true"};
+    	  $scope.alerts = [{ type: 'success', msg: 'Supplier successfully created.' }];
     	  $scope.supplier = {};
         },
         function(err){
-        	$scope.alert = {"type":"alert alert-danger alert-dismissable", 
-                            "msg":"Failed. Error: "+err.status, 
-                            "exist":"true"};
+        	$scope.alerts = [{ type: 'danger', msg: 'Failed. Error:' + err.status}];
         });
     };                                          
   }]);
 
 // *SUPP: supplier EDIT controller
-koleksiNaiaControllers.controller('SuppEditCtrl', ['$scope', '$route', '$window', 'Supplier',
-  function($scope, $route, $window, Supplier) {
-	Supplier.get({supplierId:$route.current.params.supplierId},
+koleksiNaiaControllers.controller('SuppEditCtrl', ['$scope', '$routeParams', '$window', 'Supplier',
+  function($scope, $routeParams, $window, Supplier) {
+	Supplier.get({supplierId:$routeParams.supplierId},
 	  function(supplierData) {
 		$scope.supplier = supplierData;
 	  },
@@ -136,15 +177,18 @@ koleksiNaiaControllers.controller('SuppEditCtrl', ['$scope', '$route', '$window'
 	});
 	$scope.pageHeader = "Edit Supplier";
 	$scope.isIdDisable = true;
-    $scope.alert = {"exist":"false"};
     
+    $scope.closeAlert = function(index) {
+      $scope.alerts.splice(index, 1);
+    };
+      
     $scope.saveSupplier = function() {
     	Supplier.update({supplierId:$scope.supplier.id}, $scope.supplier, 
         function(){
-        	$scope.alert = {"type":"alert alert-success alert-dismissable", "msg":"Save supplier succedd.", "exist":"true"};
+    	  $scope.alerts = [{ type: 'success', msg: 'Supplier successfully updated.' }];
         },
         function(err){
-        	$scope.alert = {"type":"alert alert-danger alert-dismissable", "msg":"Save supplier failed.", "exist":"true"};
+          $scope.alerts = [{ type: 'danger', msg: 'Failed. Error:' + err.status}];
         });
     };
   }]);
@@ -153,23 +197,3 @@ koleksiNaiaControllers.controller('SuppOrderCtrl', [
   function() {
   }]);
 
-//koleksiNaiaControllers.controller('SuppEditCtrl', ['$scope', '$routeParams', 'Supplier',
-//                                                   function($scope, $routeParams, Supplier) {
-//                                                 	$scope.pageHeader = "Edit Supplier";
-//                                                     $scope.supplier = Supplier.get({supplierId:$routeParams.supplierId});
-//                                                     
-//                                                     $scope.saveSupplier() = function() {
-//                                                       Supplier.create($scope.supplier, 
-//                                                         function(supp){
-//                                                       	  $window.location = '/app/index.html#/suppliers/'+supp.id;
-//                                                         },
-//                                                         function(err){
-//                                                             alert('request failed');
-//                                                         });
-//                                                     };
-//                                                   }]);
-
-//koleksiNaiaControllers.controller('SuppEditCtrl.loadData', ['$routeParams', 'Supplier',
-//  supplierData: function($routeParams, Supplier) {
-//    return Supplier.get({supplierId:$routeParams.supplierId});
-//  }]);

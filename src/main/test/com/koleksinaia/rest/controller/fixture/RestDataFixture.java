@@ -1,15 +1,76 @@
 package com.koleksinaia.rest.controller.fixture;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.koleksinaia.core.entity.Customer;
+import com.koleksinaia.core.entity.Order;
 import com.koleksinaia.core.entity.Supplier;
 
 
 
 public class RestDataFixture {
 
+	/*** ORDER DATA FIXTURE ***/	
+	public static final int ORDER_1_ID = 1;
+	public static final String ORDER_1_DATE = "2014-17-3";
+	public static final String ORDER_1_ITEM = "SR 1123";
+	public static final String ORDER_1_TYPE = "red";
+	public static final int ORDER_1_COST = 70;
+	public static final int ORDER_1_PRICE = 82;
+	
+	public static Date todayDate() {
+		java.util.Calendar cal = java.util.Calendar.getInstance();
+		java.util.Date utilDate = cal.getTime();
+		return new Date(utilDate.getTime());
+	}
+	
+	public static Order standardOrder() {
+		return customOrder(ORDER_1_ID, todayDate(), standardCustomer(), standardSupplier(), ORDER_1_ITEM, ORDER_1_TYPE, ORDER_1_COST, ORDER_1_PRICE);
+	}
+	
+	public static Order customOrder(int id, Date date, Customer cust, Supplier supp, String item, String itemType, int cost, int price) {
+		Order order = new Order();
+		order.setId(id);
+		order.setDate(date);
+		order.setCustomer(cust);
+		order.setSupplier(supp);
+		order.setItemName(item);
+		order.setItemType(itemType);
+		order.setCost(cost);
+		order.setPrice(price);
+		return order;
+	}
+	
+	public static List<Order> allOrders() {
+		List<Order> orders = new ArrayList<Order>();
+	    for(int i=0; i<10; i++) {
+	    	orders.add(customOrder(ORDER_1_ID+i, todayDate(), standardCustomer(), standardSupplier(), ORDER_1_ITEM+i, ORDER_1_TYPE, ORDER_1_COST, ORDER_1_PRICE));
+	    }
+	    return orders;
+	}
+	
+	public static String standardOrderJSON() {
+		return customOrderJSON(todayDate().toString(), standardCustomerJSON(), standardSupplierJSON(), ORDER_1_ITEM, ORDER_1_TYPE, ORDER_1_COST, ORDER_1_PRICE);
+	}
+	
+	public static String customOrderJSON(String date, String customer, String supplier, String item, String itemType, int cost, int price) {
+		return "{ \"date\": \""+date+"\", "
+				+ "\"customer\": "+customer+", "
+				+ "\"supplier\": "+supplier+", "
+				+ "\"itemName\": \""+item+"\", "
+				+ "\"itemType\": \""+itemType+"\", "
+				+ "\"cost\": \""+cost+"\", "
+				+ "\"price\": \""+price+"\" }";
+	}
+	
+	public static String standardOrdersJSON() {
+		return "["
+				+ standardOrderJSON()
+				+ "]";
+	}
+	
 	/*** SUPPLIER DATA FIXTURE ***/	
 	public static final String SUPPLIER_1_ID = "SR";
 	public static final String SUPPLIER_2_ID = "PINK";

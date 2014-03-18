@@ -7,7 +7,8 @@ angular.module('koleksiNaia', [
   'koleksiNaia.filters',
   'koleksiNaia.services',
   'koleksiNaia.directives',
-  'koleksiNaia.controllers'
+  'koleksiNaia.controllers',
+  'ui.bootstrap'
 ]).
 config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/dashboard', {templateUrl: 'partials/dashboard.html', controller: 'DashboardCtrl'});
@@ -15,7 +16,7 @@ config(['$routeProvider', function($routeProvider) {
   // ***** ORDERS ***** 
   $routeProvider.when('/orders/create', {templateUrl: 'partials/orders/order-create.html', controller: 'OrderCreateCtrl'});
   $routeProvider.when('/orders/search', {templateUrl: 'partials/orders/order-list.html', controller: 'OrderListCtrl'});
-  $routeProvider.when('/orders/:orderId', {templateUrl: 'partials/orders/order-detail.html', controller: 'OrderDetailCtrl'});
+  $routeProvider.when('/orders/:orderId', {templateUrl: 'partials/orders/order-detail.html', controller: 'OrderEditCtrl'});
   
   // ***** PURCHASE and COLLECTION *****
   $routeProvider.when('/purchase-collection', {templateUrl: 'partials/suppliers/purchase-collection-supplier-list.html', controller: 'SuppListCtrl'});

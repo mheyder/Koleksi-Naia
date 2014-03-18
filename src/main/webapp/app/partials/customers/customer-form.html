@@ -1,10 +1,7 @@
 <div class="container theme-showcase" role="main">
   <h2 class="page-header">{{pageHeader}}</h2>
   
-  <div ng-class="alert.type" ng-show="alert.exist">
-    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-    <strong>{{alert.msg}}</strong>
-  </div>
+  <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
   
   <form class="form-horizontal" role="form">
     <div class="form-group">

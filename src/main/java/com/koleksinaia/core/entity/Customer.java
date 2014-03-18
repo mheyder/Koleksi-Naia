@@ -8,25 +8,25 @@ import javax.persistence.Id;
 public class Customer {
 
 	@Id
-	@Column(name = "supplier_id", unique = true)
+	@Column(name = "customer_id", unique = true)
 	private String id;
 	
-	@Column(name = "supplier_name")
+	@Column(name = "customer_name")
 	private String name;
 	
-	@Column(name = "supplier_phone")
+	@Column(name = "customer_phone")
 	private String phone;
 	
-	@Column(name = "supplier_bbm")
+	@Column(name = "customer_bbm")
 	private String bbm;
 	
-	@Column(name = "supplier_discount")
-	private int discount;
+	@Column(name = "customer_discount")
+	private long discount;
 	
-	@Column(name = "supplier_addr")
+	@Column(name = "customer_addr")
 	private String address;
 	
-	@Column(name = "supplier_info")
+	@Column(name = "customer_info")
 	private String info;
 	
 	public Customer() {
@@ -57,10 +57,10 @@ public class Customer {
 	public void setBbm(String bbm) {
 		this.bbm = bbm;
 	}
-	public int getDiscount() {
+	public long getDiscount() {
 		return discount;
 	}
-	public void setDiscount(int discount) {
+	public void setDiscount(long discount) {
 		this.discount = discount;
 	}
 	public String getInfo() {
