@@ -1,0 +1,83 @@
+<div class="container-fluid theme-showcase" role="main">
+  <h1 class="page-header">Edit Order #{{order.id}}</h1>
+  
+  <form class="form-horizontal" role="form">
+  
+    <div class="form-group">
+      <label for="supplier" class="col-sm-1 control-label">Supplier</label>
+      <div class="col-sm-3">
+        <input type="text" class="form-control" ng-model="order.supplierName" id="supplier" disabled>
+      </div>      
+      <label for="date" class="control-label col-sm-2 col-sm-offset-2">Date</label>
+      <div class="col-sm-2">
+        <input class="form-control" id="date" ng-model="order.date" show-weeks="false" datepicker-popup="d/MM/yy" max="maxDate" ng-required="true"/>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="customer" class="col-sm-1 control-label">Customer</label>
+      <div class="col-sm-3">
+        <input type="text" class="form-control" ng-model="order.customerName" id="customer" disabled>
+      </div>
+      <label for="dropship" class="control-label col-sm-1 col-sm-offset-2">Dropship</label>
+      <div class="col-sm-3">
+        <input type="text" class="form-control" ng-model="order.dropship" id="dropship">
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="itemName" class="col-sm-1 control-label">Item</label>
+      <div class="col-sm-3">
+        <input type="text" class="form-control" ng-model="order.itemName" id="itemName">
+      </div>
+      <label for="itemType" class="control-label col-sm-1 col-sm-offset-2">Colour</label>
+      <div class="col-sm-3">
+        <input type="text" class="form-control" ng-model="order.itemType" id="itemType">
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="cost" class="col-sm-1 control-label">Cost</label>
+      <div class="col-sm-3">
+        <input type="text" class="form-control" ng-model="order.cost" id="cost">
+      </div>
+      <label for="price" class="control-label col-sm-1 col-sm-offset-2">Price</label>
+      <div class="col-sm-3">
+        <input type="text" class="form-control" ng-model="order.price" id="price">
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="collection" class="col-sm-1 control-label">Status</label>
+      <div class="col-sm-3">
+        <p class="form-control-static" ng-show="!order.purchaseDate && !order.collectionDate && !order.paymentDate && !order.shippingDate">
+          New
+        </p>
+        <p class="form-control-static" ng-show="order.purchaseDate">
+          Purchased on {{order.purchaseDate}}
+          <a ng-href="#/purchases/edit/{{order.purchaseId}}"><span class="glyphicon glyphicon-pencil"></span><a/>        
+        </p>
+        <p class="form-control-static" ng-show="order.collectionDate">
+          Collected on {{order.collectionDate}}
+          <a ng-href="#/collection/edit/{{order.collectionId}}"><span class="glyphicon glyphicon-pencil"></span><a/>        
+        </p>
+        <p class="form-control-static" ng-show="order.paymentDate">
+          Paid by {{order.customerName}} on {{order.paymentDate}}
+          <a ng-href="#/payments/edit/{{order.paymentId}}"><span class="glyphicon glyphicon-pencil"></span><a/>        
+        </p>
+        <p class="form-control-static" ng-show="order.shippingDate">
+          Shipped on {{order.shippingDate}}
+          <a ng-href="#/shipping/edit/{{order.shippingId}}"><span class="glyphicon glyphicon-pencil"></span><a/>        
+        </p>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <div class="col-sm-offset-1">
+        <a href="#/orders" class="btn btn-default"><span class="glyphicon glyphicon-arrow-left"></span> Back</a>
+        <button type="submit" class="btn btn-success">Save Order</button>
+      </div>
+    </div>
+    
+  </form>
+</div>

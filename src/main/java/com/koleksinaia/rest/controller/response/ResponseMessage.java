@@ -1,0 +1,37 @@
+package com.koleksinaia.rest.controller.response;
+
+public class ResponseMessage {
+	
+	public static final String MSG_TYPE_SUCCEED = "succeed";
+	public static final String MSG_TYPE_FAILED = "failed";
+	public static final String MSG_TYPE_WARNING = "warning";
+		
+	private String type;
+	
+	private String message;
+	
+	
+
+	public ResponseMessage(String type, String message) {
+		this.type = type;
+		this.message = message;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	
+}

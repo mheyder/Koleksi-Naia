@@ -20,15 +20,27 @@ import org.hibernate.annotations.CascadeType;
 public class Purchase {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.TABLE)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name = "purchase_id", unique = true)
 	private int id;
 	
 	@Column(name = "purchase_date", nullable = false)
-	private Date date;
+	private Date date;	
 	
-	@Column(name = "purchase_total")
-	private long total;
+	@Column(name = "purchase_order_count", nullable = false)
+	private int orderCount;
+	
+	@Column(name = "purchase_order_cost", nullable = false)
+	private long orderCost;
+	
+	@Column(name = "purchase_collection_cost")
+	private long collectionCost;
+	
+	@Column(name = "purchase_other_cost")
+	private long otherCost;
+	
+	@Column(name = "purchase_total_cost")
+	private long totalCost;
 	
 	@Column(name = "purchase_info")
 	private String info;
@@ -39,7 +51,10 @@ public class Purchase {
 	private Supplier supplier;
 	
 	@OneToMany(mappedBy="purchase", fetch = FetchType.LAZY)
-	private Set<Order> Orders;
+	private Set<Order> orders;
+	
+	@OneToMany(mappedBy="purchase", fetch = FetchType.LAZY)
+	private Set<Collection> collections;
 	
 	public Purchase() {
 		
@@ -61,12 +76,12 @@ public class Purchase {
 		this.date = date;
 	}
 
-	public long getTotal() {
-		return total;
+	public long getTotalCost() {
+		return totalCost;
 	}
 
-	public void setTotal(long total) {
-		this.total = total;
+	public void setTotalCost(long totalCost) {
+		this.totalCost = totalCost;
 	}
 
 	public Supplier getSupplier() {
@@ -86,11 +101,51 @@ public class Purchase {
 	}
 
 	public Set<Order> getOrders() {
-		return Orders;
+		return orders;
 	}
 
 	public void setOrders(Set<Order> orders) {
-		Orders = orders;
+		this.orders = orders;
+	}
+
+	public int getOrderCount() {
+		return orderCount;
+	}
+
+	public void setOrderCount(int orderCount) {
+		this.orderCount = orderCount;
+	}
+
+	public long getOrderCost() {
+		return orderCost;
+	}
+
+	public void setOrderCost(long orderCost) {
+		this.orderCost = orderCost;
+	}
+
+	public long getCollectionCost() {
+		return collectionCost;
+	}
+
+	public void setCollectionCost(long collectionCost) {
+		this.collectionCost = collectionCost;
+	}
+
+	public long getOtherCost() {
+		return otherCost;
+	}
+
+	public void setOtherCost(long otherCost) {
+		this.otherCost = otherCost;
+	}
+
+	public Set<Collection> getCollections() {
+		return collections;
+	}
+
+	public void setCollections(Set<Collection> collections) {
+		this.collections = collections;
 	}
 	
 	

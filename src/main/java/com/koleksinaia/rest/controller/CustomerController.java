@@ -16,6 +16,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.koleksinaia.core.entity.Customer;
 import com.koleksinaia.core.service.CustomerService;
+import com.koleksinaia.rest.controller.entity.CustomerListDetail;
+import com.koleksinaia.rest.controller.entity.CustomerNameListDetail;
+import com.koleksinaia.rest.controller.entity.CustomerStatisticListDetail;
+import com.koleksinaia.rest.controller.entity.SupplierStatisticListDetail;
 
 @Controller
 @RequestMapping("/customers")
@@ -31,8 +35,15 @@ public class CustomerController {
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
-	public List<Customer> getAllCustomers() {
-		return customerService.findAllCustomers(); 
+	public List<CustomerListDetail> getAllCustomers() {
+		return CustomerListDetail.getCustomerList(customerService.findAllCustomers()); 
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, params = "detail=namelist")
+	@ResponseStatus(HttpStatus.OK)
+	@ResponseBody
+	public List<CustomerNameListDetail> getCustomerNameList() {
+		return CustomerNameListDetail.getCustomerList(customerService.findAllCustomers()); 
 	}
 	
 	/**
@@ -83,4 +94,18 @@ public class CustomerController {
 		Customer savedCustomer = customerService.saveCustomer(customer);		
 		return new ResponseEntity<Customer>(savedCustomer, HttpStatus.OK);
     }
+	
+	@RequestMapping(method = RequestMethod.GET, params = "detail=unshipped")
+	@ResponseStatus(HttpStatus.OK)
+	@ResponseBody
+	public List<CustomerStatisticListDetail> getCustomerUnshippedOrderList() {
+		return CustomerStatisticListDetail.getCustomerList(customerService.findCustomersWithUnshippedOrders());
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, params = "detail=unpaid")
+	@ResponseStatus(HttpStatus.OK)
+	@ResponseBody
+	public List<CustomerStatisticListDetail> getSupplierUnpaidOrderList() {
+		return CustomerStatisticListDetail.getCustomerList(customerService.findCustomersWithUnpaidOrders());
+	}
 }

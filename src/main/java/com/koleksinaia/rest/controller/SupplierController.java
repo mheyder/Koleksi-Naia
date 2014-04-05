@@ -16,6 +16,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.koleksinaia.core.entity.Supplier;
 import com.koleksinaia.core.service.SupplierService;
+import com.koleksinaia.rest.controller.entity.SupplierListDetail;
+import com.koleksinaia.rest.controller.entity.SupplierNameListDetail;
+import com.koleksinaia.rest.controller.entity.SupplierStatisticListDetail;
 
 @Controller
 @RequestMapping("/suppliers")
@@ -33,9 +36,16 @@ public class SupplierController {
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
-	public List<Supplier> getAllSuppliers() {
-		//TODO pagination
-		return supplierService.findAllSuppliers(); 
+	public List<SupplierListDetail> getAllSuppliers() {
+		//TODO pagination		
+		return SupplierListDetail.getSupplierList(supplierService.findAllSuppliers());
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, params = "detail=namelist")
+	@ResponseStatus(HttpStatus.OK)
+	@ResponseBody
+	public List<SupplierNameListDetail> getSupplierNameList() {
+		return SupplierNameListDetail.getSupplierList(supplierService.findAllSuppliers());
 	}
 	
 	/**
@@ -86,6 +96,20 @@ public class SupplierController {
 		Supplier savedSupplier = supplierService.saveSupplier(supplier);		
 		return new ResponseEntity<Supplier>(savedSupplier, HttpStatus.OK);
     }
+	
+	@RequestMapping(method = RequestMethod.GET, params = "detail=uncollected")
+	@ResponseStatus(HttpStatus.OK)
+	@ResponseBody
+	public List<SupplierStatisticListDetail> getSupplierUncollectedOrderList() {
+		return SupplierStatisticListDetail.getSupplierList(supplierService.findSuppliersWithUncollectedOrders());
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, params = "detail=unpurchased")
+	@ResponseStatus(HttpStatus.OK)
+	@ResponseBody
+	public List<SupplierStatisticListDetail> getSupplierUnpurchasedOrderList() {
+		return SupplierStatisticListDetail.getSupplierList(supplierService.findSuppliersWithUnpurchasedOrders());
+	}
 	
 //	@RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
 //    public ResponseEntity<Supplier> deleteSupplier(@PathVariable String id) {        

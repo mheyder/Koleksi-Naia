@@ -1,92 +1,79 @@
-<div class="container theme-showcase" role="main">
-  <h1 class="page-header">Order</h1>
+<div class="container-fluid theme-showcase" role="main">
+  <h1 class="page-header">Order #{{order.id}}</h1>
+  
   <form class="form-horizontal" role="form">
+  
     <div class="form-group">
-      <label for="inputEmail3" class="col-sm-2 control-label">Order Date</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" id="inputEmail3" placeholder="">
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="inputEmail3" class="col-sm-2 control-label">Customer</label>
-      <div class="col-sm-10">
-        <select class="form-control">
-          <option>Ati</option>
-          <option>Poppy</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-        </select>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="inputEmail3" class="col-sm-2 control-label">Supplier</label>
-      <div class="col-sm-10">
-        <select class="form-control">
-          <option>Pink</option>
-          <option>SR</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-        </select>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="inputEmail3" class="col-sm-2 control-label">Item</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" id="inputEmail3" placeholder="">
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="inputEmail3" class="col-sm-2 control-label">Colour</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" id="inputEmail3" placeholder="">
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="inputEmail3" class="col-sm-2 control-label">Cost</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" id="inputEmail3" placeholder="">
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="inputEmail3" class="col-sm-2 control-label">Price</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" id="inputEmail3" placeholder="">
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="inputEmail3" class="col-sm-2 control-label">Collection Date</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" id="inputEmail3" placeholder="">
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="inputEmail3" class="col-sm-2 control-label">Purchase Date</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" id="inputEmail3" placeholder="">
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="inputEmail3" class="col-sm-2 control-label">Payment Date</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" id="inputEmail3" placeholder="">
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="inputEmail3" class="col-sm-2 control-label">Shipping Date</label>
-      <div class="col-sm-9">
-        <input type="text" class="form-control" id="inputEmail3" placeholder="">
-      </div>
-      <div class="col-sm-1">
-        <a href="#"><span class="glyphicon glyphicon-remove"></span></a>
+      <label for="supplier" class="col-sm-1 control-label">Supplier</label>
+      <div class="col-sm-3">
+        <p class="form-control-static">{{order.supplierName}}</p>
+      </div>      
+      <label for="date" class="control-label col-sm-2 col-sm-offset-2">Date</label>
+      <div class="col-sm-2">
+      <p class="form-control-static">{{order.date | date:'dd/MM/yy'}}</p>
       </div>
     </div>
     
     <div class="form-group">
-      <div class="col-sm-offset-2 col-sm-10">
-        <button type="submit" class="btn btn-default">Save</button>
+      <label for="customer" class="col-sm-1 control-label">Customer</label>
+      <div class="col-sm-3">
+        <p class="form-control-static">{{order.customerName}}</p>
+      </div>
+      <label for="dropship" class="control-label col-sm-1 col-sm-offset-2">Dropship</label>
+      <div class="col-sm-3">
+        <p class="form-control-static">{{order.dropship}}</p>
       </div>
     </div>
+    
+    <div class="form-group">
+      <label for="itemName" class="col-sm-1 control-label">Item</label>
+      <div class="col-sm-3">
+        <p class="form-control-static">{{order.itemName}}</p>
+      </div>
+      <label for="itemType" class="control-label col-sm-1 col-sm-offset-2">Colour</label>
+      <div class="col-sm-3">
+        <p class="form-control-static">{{order.itemType}}</p>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="cost" class="col-sm-1 control-label">Cost</label>
+      <div class="col-sm-3">
+        <p class="form-control-static">{{order.cost}}</p>
+      </div>
+      <label for="price" class="control-label col-sm-1 col-sm-offset-2">Price</label>
+      <div class="col-sm-3">
+        <p class="form-control-static">{{order.price}}</p>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="collection" class="col-sm-1 control-label">Status</label>
+      <div class="col-sm-3">
+        <p class="form-control-static" ng-show="!order.purchaseDate && !order.collectionDate && !order.paymentDate && !order.shippingDate">
+          New
+        </p>
+        <p class="form-control-static" ng-show="order.purchaseDate">
+          Purchased on {{order.purchaseDate}}    
+        </p>
+        <p class="form-control-static" ng-show="order.collectionDate">
+          Collected on {{order.collectionDate}}    
+        </p>
+        <p class="form-control-static" ng-show="order.paymentDate">
+          Paid by {{order.customerName}} on {{order.paymentDate}}    
+        </p>
+        <p class="form-control-static" ng-show="order.shippingDate">
+          Shipped on {{order.shippingDate}}    
+        </p>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <div class="col-sm-offset-1">
+        <a href="#/orders" class="btn btn-default"><span class="glyphicon glyphicon-arrow-left"></span> Back</a>
+        <a ng-href="#/orders/edit/{{order.id}}" class="btn btn-primary">Edit Order <span class="glyphicon glyphicon-pencil"></span></a>
+      </div>
+    </div>
+    
   </form>
 </div>

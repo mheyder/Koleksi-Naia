@@ -1,0 +1,57 @@
+<div class="container-fluid theme-showcase" role="main">
+  <h2 class="page-header">Shipping</h2>
+  
+  <div class="row">
+    <div class="col-sm-2">
+      <a href="#/shipping/create" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span>  Ship Orders</a>
+    </div>
+    <div class="col-sm-10">
+      <form class="form-inline pull-right" role="form">
+        <div class="form-group">
+          <label for="startDate">Date from</label>
+          <input id="startDate" class="form-control input-mysize" ng-model="startDate" show-weeks="false" datepicker-popup="d/MM/yy" max="endDate" placeholder="Start Date"/>
+        </div>
+        <div class="form-group">
+          <label for="endDate">to</label>
+          <input id="endDate" class="form-control input-mysize" ng-model="endDate" show-weeks="false" datepicker-popup="d/MM/yy" min="startDate" max="maxDate" placeholder="End Date"/>
+        </div>
+        <div class="form-group">
+          <label class="sr-only" for="customerId">Customer Id</label>
+          <input type="text" class="form-control input-mysize" id="customerId" ng-model="customerId" typeahead="customer.id for customer in customers | filter:$viewValue | limitTo:8" placeholder="Customer Id">
+        </div>
+        <button ng-click="search()" class="btn btn-info">Search  <span class="glyphicon glyphicon-search"></span></button>
+      </form>
+    </div>
+  </div>
+  
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Customer</th>
+          <th>Shipped Order</th>
+          <th>Price</th>
+          <th>Paid</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-show="!response.content">
+          <td colspan="6" class="text-center">No Record Found</td>
+        </tr>
+        <tr ng-repeat="shipping in response.content">
+          <td>{{shipping.date | date:'dd/MM/yy'}}</a></td>
+          <td>{{shipping.customerName}} <span ng-show="shipping.dropship"> ({{shipping.dropship}})</span></td>
+          <td>{{shipping.orderCount}}</td>
+          <td>{{shipping.price}}</td>
+          <td>{{collection.isPaid | checkmark}}</span></td>
+          <td><a href="#/shipping/{{shipping.id}}"><span class="glyphicon glyphicon-zoom-in"></span></a></td>
+        </tr>                
+      </tbody>
+    </table>
+  </div>
+  
+  <pagination class="pagination pull-right" on-select-page="changePage(page)" total-items="response.totalItems" page="response.pageNumber" max-size="maxSize" boundary-links="true" rotate="false" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+
+</div>

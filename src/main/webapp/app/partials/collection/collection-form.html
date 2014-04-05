@@ -1,0 +1,122 @@
+<div class="container-fluid theme-showcase" role="main">
+  <h2 class="page-header" ng-show="createPage">Collect Orders</h2>
+  <h2 class="page-header" ng-show="editPage">Edit Collect Order #{{collection.id}}</h2>
+  
+  <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+  
+  <form class="form-horizontal" role="form">
+    <div class="form-group">
+      <label for="inputId" class="col-sm-1 control-label">Supplier</label>
+      <div class="col-sm-3">
+        <select class="form-control" ng-model="supplierId" ng-change="getOrders()" ng-show="createPage">
+          <option ng-repeat="supplier in suppliers" value="{{supplier.supplierId}}">
+            {{supplier.supplierName}} ({{supplier.statistic}} orders)
+          </option>
+        </select>
+        <input type="text" class="form-control" ng-model="collection.supplier.name" id="cost" ng-show="editPage" disabled>
+      </div>
+      <label for="date" class="control-label col-sm-2 col-md-offset-4">Date</label>
+      <div class="col-sm-2">
+        <input class="form-control" id="date" ng-model="collection.date" show-weeks="false" datepicker-popup="d/M/yy" max="maxDate" ng-required="true"/>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="orderTable" class="col-sm-1 control-label">Orders</label>
+      <div class="col-sm-11">
+        <div class="table-responsive" id="orderTable">
+          <table class="table table-striped table-responsive">
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Colour</th>
+                <th>Customer</th>
+                <th>Date</th>
+                <th>Cost</th>
+                <th>Price</th>
+                <th>Purchased</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="order in orders" ng-class="{flag: info}">
+                <td ng-class="{flag: info}">{{order.itemName}}</td>
+                <td>{{order.itemType}}</td>
+                <td>{{order.customerId}}</td>
+                <td>{{order.date}}</td>
+                <td>{{order.cost}}</td>
+                <td>{{order.price}}</td>
+                <td>{{order.isPurchased | checkmark}}</td>
+                <td ng-show="createPage"><input type="checkbox" ng-model="flag" ng-change="addOrder(flag, order.id)"></td>
+                <td ng-show="editPage"><a ng-click="removeOrder(order)"><span class="glyphicon glyphicon-remove-sign"></span></a></td>
+              </tr>                
+            </tbody>
+          </table>
+        </div>
+        <span class="help-block col-sm-4">{{collection.totalOrder}} items selected</span>        
+      </div>
+    </div>
+    
+    <div class="form-group" ng-show="editPage">
+      <label for="orderTable" class="col-sm-1 control-label">Available Orders</label>
+      <div class="col-sm-11">
+        <div class="table-responsive" id="orderTable">
+          <table class="table table-striped table-responsive">
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Colour</th>
+                <th>Customer</th>
+                <th>Date</th>
+                <th>Cost</th>
+                <th>Price</th>
+                <th>Purchased</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="order in availOrders">
+                <td>{{order.itemName}}</td>
+                <td>{{order.itemType}}</td>
+                <td>{{order.customerId}}</td>
+                <td>{{order.date}}</td>
+                <td>{{order.cost}}</td>
+                <td>{{order.price}}</td>
+                <td>{{order.isPurchased | checkmark}}</td>
+                <td><a ng-click="addOrder(order)"><span class="glyphicon glyphicon-plus-sign"></span></a></td>
+              </tr>                
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="cost" class="col-sm-1 control-label">Cost</label>
+      <div class="col-sm-3">
+        <input type="text" class="form-control" ng-model="collection.cost" id="cost">
+      </div>      
+    </div>
+    
+    <div class="form-group">
+      <label for="info" class="col-sm-1 control-label">Info</label>
+      <div class="col-sm-5">
+        <textarea class="form-control" rows="5" ng-model="collection.info" id="info"></textarea>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <div class="col-md-offset-1">
+        <a href="#/collection" class="btn btn-default"><span class="glyphicon glyphicon-arrow-left"></span> Back</a>
+        <button type="button" class="btn btn-success" ng-click="collectOrders()">Collect Order</button>
+      </div>
+    </div>
+  </form>
+  
+  <div class="well">
+    <p>temp
+    <p>{{collection | json}}
+  </div>
+  
+  
+</div>

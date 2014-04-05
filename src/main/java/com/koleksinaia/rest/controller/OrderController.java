@@ -1,5 +1,6 @@
 package com.koleksinaia.rest.controller;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,12 +13,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.koleksinaia.core.entity.Order;
 import com.koleksinaia.core.service.OrderService;
+import com.koleksinaia.rest.controller.entity.OrderDetail;
+import com.koleksinaia.rest.controller.entity.OrderListDetail;
+import com.koleksinaia.rest.controller.response.SearchResult;
 
 @Controller
 @RequestMapping("/orders")
@@ -29,26 +34,32 @@ public class OrderController {
 	private OrderService orderService;
 	
 	/**
-	 * Handles request for getting list of orders
-	 * @return list of suppliers
+	 * Searches orders based on provided parameters
+	 * @param page
+	 * @param sort
+	 * @param startDateLong
+	 * @param endDateLong
+	 * @param customerId
+	 * @param supplierId
+	 * @return search result object
 	 */
-	//TODO add pagination and filtering
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
-	public List<Order> getAllOrderss() {
+    public SearchResult<OrderListDetail> searchOrder(
+    		@RequestParam(value="page", defaultValue="1") int page,
+    		@RequestParam(value="sort", defaultValue="newest") String sort,
+    		@RequestParam(value="startDate", defaultValue="0") long startDateLong,
+    		@RequestParam(value="endDate", defaultValue="0") long endDateLong,
+    		@RequestParam(value="customerId", defaultValue="") String customerId,
+    		@RequestParam(value="supplierId", defaultValue=(String) "") String supplierId) {
 		
-//		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-//		try {
-//			String json = ow.writeValueAsString(orderService.findAllOrders());
-//			LOG.warn("getAllOrderss order json: "+ json);
-//		} catch (JsonProcessingException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		
-		return orderService.findAllOrders(); 
-	}
+		//TODO validation on params
+		Date startDate = (startDateLong == 0) ? null : new Date(startDateLong);
+		Date endDate = (endDateLong == 0) ? null : new Date(endDateLong);
+		     
+        return OrderListDetail.getOrderSearchResult(orderService.customSearch(page, sort, startDate, endDate, customerId, supplierId));
+    }
 	
 	/**
 	 * Handles request for creating new orders
@@ -68,14 +79,14 @@ public class OrderController {
 	 * @return Http Ok (200) and order details if succeed, or Http not found (404) if order id is not exist
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
-    public ResponseEntity<Order> viewOrder(@PathVariable int id) {
+    public ResponseEntity<OrderDetail> viewOrder(@PathVariable int id) {
 		Order order = orderService.findByOrderId(id);
 
         if (order == null) { // not found
-            return new ResponseEntity<Order>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<OrderDetail>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<Order>(order, HttpStatus.OK);
-    }
+        return new ResponseEntity<OrderDetail>(new OrderDetail(order), HttpStatus.OK);
+    }	
 	
 	/**
 	 * Handles request for updating order details
@@ -85,13 +96,46 @@ public class OrderController {
 	 * @return Http Ok (200) and updated order if succeed, or Http not found (404) if order id is not exist
 	 */
 	@RequestMapping(method = RequestMethod.PUT, value = "/{id}")
-    public ResponseEntity<Order> updateOrder(@RequestBody Order order, @PathVariable int id, UriComponentsBuilder builder) {
+    public ResponseEntity<OrderDetail> updateOrder(@RequestBody Order order, @PathVariable int id, UriComponentsBuilder builder) {
 		Order exist = orderService.findByOrderId(id);
         if (exist == null) { // not found
-            return new ResponseEntity<Order>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<OrderDetail>(HttpStatus.NOT_FOUND);
         }
 		
         Order savedOrder = orderService.saveOrder(order);		
-		return new ResponseEntity<Order>(savedOrder, HttpStatus.OK);
+		return new ResponseEntity<OrderDetail>(new OrderDetail(savedOrder), HttpStatus.OK);
     }
+	
+	@RequestMapping(method = RequestMethod.GET, params = "detail=uncollected")
+	@ResponseStatus(HttpStatus.OK)
+	@ResponseBody
+    public List<OrderListDetail> getUncollectedOrdersOfSupplier(@RequestParam(value="supplierId", required=true) String supplierId) {
+
+        return OrderListDetail.getOrderList(orderService.findUncollectedOrdersBySupplier(supplierId));
+    }
+	
+	@RequestMapping(method = RequestMethod.GET, params = "detail=unpurchased")
+	@ResponseStatus(HttpStatus.OK)
+	@ResponseBody
+    public List<OrderListDetail> getUnpurchasedOrdersOfSupplier(@RequestParam(value="supplierId", required=true) String supplierId) {
+
+        return OrderListDetail.getOrderList(orderService.findUnpurchasedOrdersBySupplier(supplierId));
+    }
+	
+	@RequestMapping(method = RequestMethod.GET, params = "detail=unshipped")
+	@ResponseStatus(HttpStatus.OK)
+	@ResponseBody
+    public List<OrderListDetail> getUnshippedOrdersOfCustomer(@RequestParam(value="customerId", required=true) String customerId) {
+
+        return OrderListDetail.getOrderList(orderService.findUnshippedOrdersOfCustomer(customerId));
+    }
+	
+	@RequestMapping(method = RequestMethod.GET, params = "detail=unpaid")
+	@ResponseStatus(HttpStatus.OK)
+	@ResponseBody
+    public List<OrderListDetail> getUnpaidOrdersOfCustomer(@RequestParam(value="customerId", required=true) String customerId) {
+
+        return OrderListDetail.getOrderList(orderService.findUnpaidOrdersOfCustomer(customerId));
+    }
+	
 }

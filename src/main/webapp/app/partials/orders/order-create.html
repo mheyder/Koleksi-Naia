@@ -1,11 +1,11 @@
-<div class="container theme-showcase" role="main">
-<h2 class="page-header">Create Orders <small><a href="#/orders/search">search order</a></small></h2>
-  
+<div class="container-fluid theme-showcase" role="main">
+<h3 class="page-header">Create Orders</h3>
+
   <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
   
   <form name="createOrdersForm" ng-submit="saveOrders()" novalidate>
   <div class="table-responsive">
-    <table class="table table-striped">
+    <table class="table table-striped table-condensed">
       <thead>
         <tr>
           <th>Date</th>
@@ -21,18 +21,18 @@
       </thead>
       <tbody>
         <tr ng-repeat="order in newOrders">
-          <td><input class="form-control" ng-model="order.date" show-weeks="false" datepicker-popup="d/MM/yy" max="maxDate" ng-required="true"/></td>
-          <td><input type="text" name="customer" class="form-control" ng-model="order.customer.id" typeahead="customer.id for customer in customers | filter:$viewValue | limitTo:8"></td>
-          <td><input class="form-control" ng-model="order.dropship"></td>
+          <td><input class="form-control input-sm" ng-model="order.date" show-weeks="false" datepicker-popup="d/M/yy" max="maxDate" ng-required="true"/></td>
+          <td><input class="form-control input-sm" type="text" name="customer" ng-change="updatePrice(order)" typeahead-on-select="updatePrice(order)" ng-model="order.customer.id" typeahead="customer.id for customer in customers | filter:$viewValue | limitTo:8"></td>
+          <td><input class="form-control input-sm" ng-model="order.dropship"></td>
           <td><div class="form-group" ng-class="{'has-error' : createOrdersForm.supplier.$invalid && submitted}">
-            <input type="text" name="supplier" class="form-control" ng-model="order.supplier.id" typeahead="supplier.id for supplier in suppliers | filter:$viewValue | limitTo:8" required>
+            <input type="text" name="supplier" class="form-control input-sm" ng-model="order.supplier.id" typeahead="supplier.id for supplier in suppliers | filter:$viewValue | limitTo:8" required>
             </div></td>
           <td><div class="form-group" ng-class="{'has-error' : createOrdersForm.itemName.$invalid && submitted}">
-            <input type="text" name="itemName" class="form-control" ng-model="order.itemName" required>
+            <input type="text" name="itemName" class="form-control input-sm" ng-model="order.itemName" required>
           </div></td>
-          <td><input class="form-control" ng-model="order.itemType"></td>
-          <td><input class="form-control" ng-model="order.cost"></td>
-          <td><input class="form-control" ng-model="order.price"></td>
+          <td><input class="form-control input-sm" ng-model="order.itemType"></td>
+          <td><input class="form-control input-sm" ng-model="order.cost" ng-change="updatePrice(order)"></td>
+          <td><input class="form-control input-sm" ng-model="order.price"></td>
           <td><a ng-click="deleteRow(order)"><span class="glyphicon glyphicon-remove"></span></a></td>
         </tr>
       </tbody>
@@ -41,24 +41,15 @@
   
   <div class="form-horizontal">
     <div class="form-group">
-      <div class="col-sm-6"><a ng-click="addRow()" class="btn btn-info">Add row</a></div>
-      <div class="col-sm-6"> <a ng-click="saveOrders()" class="btn btn-success">Create Orders</a>
-      <button type="submit" class="btn btn-success" type="button">Create Orders</button></div>
+      <div class="col-sm-6">
+        <a href="#/orders" class="btn btn-default"><span class="glyphicon glyphicon-arrow-left"></span> Back</a>
+        <button type="submit" class="btn btn-success" type="button">Create Orders <span class="glyphicon glyphicon-plus-sign"></span></button>
+      </div>
+      <div class="col-sm-6"> 
+        <a ng-click="addRow()" class="btn btn-info pull-right">Add row</a>
+      </div>
     </div>
   </div>
   </form>
   
-  <!-- will be deleted -->
-  <br>
-  <div class="well">
-    <p>Temp!
-    <p><i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
-    <p><input type="text" ng-model="asyncSelected" placeholder="Locations loaded via $http" typeahead="address for address in getLocation($viewValue) | filter:$viewValue" typeahead-loading="loadingLocations" class="form-control">
-    <input type="text" ng-model="selected" typeahead="supplier.id for supplier in suppliers | filter:$viewValue | limitTo:8" class="form-control">
-    <p>json: {{newOrders | json}}</p>
-    <p>
-    <p>- on page load: request customerId list and supplierId list</p>
-    <p>- create button click: 1. validate the orders, 2. send to server, 3. </p>
-    <p>                       </p>
-  </div>
 </div>

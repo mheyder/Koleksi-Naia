@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.koleksinaia.core.entity.Customer;
+import com.koleksinaia.core.entity.helper.CustomerWithStatistic;
 import com.koleksinaia.core.service.CustomerService;
 import com.koleksinaia.dao.CustomerDao;
+import com.koleksinaia.dao.OrderDao;
 
 @Service("customerService")
 @Transactional(readOnly = true)
@@ -17,6 +19,9 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Resource
 	private CustomerDao customerDao;
+	
+	@Resource
+	private OrderDao orderDao;
 	
 	@Override
 	public Customer findByCustomerId(String id) {
@@ -47,6 +52,16 @@ public class CustomerServiceImpl implements CustomerService {
 			return !customerDao.exists(id);
 		}
 		return false;
+	}
+
+	@Override
+	public List<CustomerWithStatistic> findCustomersWithUnshippedOrders() {
+		return orderDao.countUnshippedOrdersGroupByCustomer();
+	}
+
+	@Override
+	public List<CustomerWithStatistic> findCustomersWithUnpaidOrders() {
+		return orderDao.countUnpaidOrdersGroupByCustomer();
 	}
 
 }

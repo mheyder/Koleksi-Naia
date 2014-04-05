@@ -1,0 +1,138 @@
+<div class="container-fluid theme-showcase" role="main">
+  <h2 class="page-header" ng-show="createPage">Ship Orders</h2>
+  <h2 class="page-header" ng-show="editPage">Edit Ship Order #{{shipping.id}}</h2>
+  
+  <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+  
+  <form class="form-horizontal" role="form">
+    <div class="form-group">
+      <label for="inputId" class="col-sm-1 control-label">Customer</label>
+      <div class="col-sm-3">
+        <select class="form-control" ng-model="customerId" ng-change="getOrders()" ng-show="createPage">
+          <option ng-repeat="customer in customers" value="{{customer.customerId}}">
+            {{customer.customerName}} ({{customer.statistic}} orders)
+          </option>
+        </select>
+        <input type="text" class="form-control" ng-model="shipping.customer.name" id="cost" ng-show="editPage" disabled>
+      </div>
+      <label for="date" class="control-label col-sm-2 col-md-offset-4">Date</label>
+      <div class="col-sm-2">
+        <input class="form-control" id="date" ng-model="shipping.date" show-weeks="false" datepicker-popup="d/M/yy" max="maxDate" ng-required="true"/>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="dropship" class="col-sm-1 control-label">Dropship</label>
+      <div class="col-sm-3">
+        <input type="text" class="form-control" ng-model="shipping.dropship" id="dropship">
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="address" class="col-sm-1 control-label">Address</label>
+      <div class="col-sm-5">
+        <textarea class="form-control" rows="5" ng-model="shipping.address" id="address"></textarea>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="orderTable" class="col-sm-1 control-label">Orders</label>
+      <div class="col-sm-11">
+        <div class="table-responsive" id="orderTable">
+          <table class="table table-striped table-responsive">
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Colour</th>
+                <th>Supplier</th>
+                <th>Date</th>
+                <th>Cost</th>
+                <th>Price</th>
+                <th>Paid</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-show="!orders">
+                <td colspan="8" class="text-center">No Record Found</td>
+              </tr>
+              <tr ng-repeat="order in orders" ng-class="{flag: info}">
+                <td ng-class="{flag: info}">{{order.itemName}}</td>
+                <td>{{order.itemType}}</td>
+                <td>{{order.supplierId}}</td>
+                <td>{{order.date}}</td>
+                <td>{{order.cost}}</td>
+                <td>{{order.price}}</td>
+                <td>{{order.isPaid | checkmark}}</td>
+                <td ng-show="createPage"><input type="checkbox" ng-model="flag" ng-change="addOrder(flag, order.id)"></td>
+                <td ng-show="editPage"><a ng-click="removeOrder(order)"><span class="glyphicon glyphicon-remove-sign"></span></a></td>
+              </tr>                
+            </tbody>
+          </table>
+        </div>
+        <span class="help-block col-sm-4">{{shipping.totalOrder}} items selected</span>        
+      </div>
+    </div>
+    
+    <div class="form-group" ng-show="editPage">
+      <label for="orderTable" class="col-sm-1 control-label">Available Orders</label>
+      <div class="col-sm-11">
+        <div class="table-responsive" id="orderTable">
+          <table class="table table-striped table-responsive">
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Colour</th>
+                <th>Supplier</th>
+                <th>Date</th>
+                <th>Cost</th>
+                <th>Price</th>
+                <th>Paid</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-show="!availOrders">
+                <td colspan="8" class="text-center">No Record Found</td>
+              </tr>
+              <tr ng-repeat="order in availOrders">
+                <td>{{order.itemName}}</td>
+                <td>{{order.itemType}}</td>
+                <td>{{order.supplierId}}</td>
+                <td>{{order.date}}</td>
+                <td>{{order.cost}}</td>
+                <td>{{order.price}}</td>
+                <td>{{order.isPaid | checkmark}}</td>
+                <td><a ng-click="addOrder(order)"><span class="glyphicon glyphicon-plus-sign"></span></a></td>
+              </tr>                
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="price" class="col-sm-1 control-label">Price</label>
+      <div class="col-sm-3">
+        <input type="text" class="form-control" ng-model="shipping.price" id="price">
+      </div>      
+    </div>
+    
+    <div class="form-group">
+      <label for="info" class="col-sm-1 control-label">Info</label>
+      <div class="col-sm-5">
+        <textarea class="form-control" rows="5" ng-model="shipping.info" id="info"></textarea>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <div class="col-sm-offset-1">
+        <a href="#/shipping" class="btn btn-default"><span class="glyphicon glyphicon-arrow-left"></span> Back</a>
+        <button type="button" class="btn btn-success" ng-click="saveShipping()"><span ng-show="createPage">
+          Ship</span><span ng-show="editPage">Save Shipping</span> Order
+        </button>
+      </div>
+    </div>
+  </form> 
+  
+</div>

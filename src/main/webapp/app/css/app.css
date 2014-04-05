@@ -1,6 +1,6 @@
 /* app css stylesheet */
 body {
-  padding-top: 40px;
+  padding-top: 30px;
   padding-bottom: 30px;
 }
 
@@ -10,4 +10,12 @@ body {
 
 .button-dashboard-full {
   width: 100%;
+}
+
+.pagination {
+  margin: 0px !important;
+}
+
+.input-mysize { 
+  width: 100px !important;
 }

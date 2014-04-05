@@ -18,7 +18,7 @@ import org.hibernate.annotations.CascadeType;
 public class Order {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "order_id", unique=true, nullable=false)
 	private int id;
 	
@@ -50,22 +50,22 @@ public class Order {
 	@Column(name = "order_price", nullable = false)
 	private long price;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@Cascade({CascadeType.SAVE_UPDATE, CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name = "purchase_id")
 	private Purchase purchase;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@Cascade({CascadeType.SAVE_UPDATE, CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name = "collection_id")
 	private Collection collection;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@Cascade({CascadeType.SAVE_UPDATE, CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name = "payment_id")
 	private Payment payment;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@Cascade({CascadeType.SAVE_UPDATE, CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name = "shipping_id")
 	private Shipping shipping;

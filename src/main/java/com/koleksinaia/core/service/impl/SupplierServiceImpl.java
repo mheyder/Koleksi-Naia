@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.koleksinaia.core.entity.Supplier;
+import com.koleksinaia.core.entity.helper.SuppplierWithStatistic;
 import com.koleksinaia.core.service.SupplierService;
+import com.koleksinaia.dao.OrderDao;
 import com.koleksinaia.dao.SupplierDao;
 
 
@@ -18,6 +20,9 @@ public class SupplierServiceImpl implements SupplierService {
 	
 	@Resource
 	private SupplierDao supplierDao;
+	
+	@Resource
+	private OrderDao orderDao;
 
 	@Override
 	public Supplier findBySupplierId(String id) {		
@@ -48,6 +53,16 @@ public class SupplierServiceImpl implements SupplierService {
 	@Override
 	public boolean supplierIdExists(String id) {
 		return supplierDao.exists(id);
+	}
+
+	@Override
+	public List<SuppplierWithStatistic> findSuppliersWithUncollectedOrders() {
+		return orderDao.countUncollectedOrdersGroupBySupplier();
+	}
+
+	@Override
+	public List<SuppplierWithStatistic> findSuppliersWithUnpurchasedOrders() {
+		return orderDao.countUnpurchasedOrdersGroupBySupplier();
 	}
 
 }

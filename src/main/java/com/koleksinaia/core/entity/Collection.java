@@ -20,12 +20,18 @@ import org.hibernate.annotations.CascadeType;
 public class Collection {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.TABLE)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name = "collection_id", unique = true)
 	private int id;
 	
 	@Column(name = "collection_date", nullable = false)
 	private Date date;
+	
+	@Column(name = "collection_total_order")
+	private int totalOrder;
+	
+	@Column(name = "collection_cost")
+	private long cost;
 	
 	@Column(name = "collection_info")
 	private String info;
@@ -35,8 +41,13 @@ public class Collection {
 	@JoinColumn(name = "supplier_id", nullable = false)
 	private Supplier supplier;
 	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@Cascade({CascadeType.SAVE_UPDATE, CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinColumn(name = "purchase_id")
+	private Purchase purchase;
+	
 	@OneToMany(mappedBy="collection", fetch = FetchType.LAZY)
-	private Set<Order> Orders;
+	private Set<Order> orders;
 	
 	public Collection() {
 		
@@ -75,11 +86,36 @@ public class Collection {
 	}
 
 	public Set<Order> getOrders() {
-		return Orders;
+		return orders;
 	}
 
 	public void setOrders(Set<Order> orders) {
-		Orders = orders;
+		this.orders = orders;
 	}
+
+	public long getCost() {
+		return cost;
+	}
+
+	public void setCost(long cost) {
+		this.cost = cost;
+	}
+
+	public Purchase getPurchase() {
+		return purchase;
+	}
+
+	public void setPurchase(Purchase purchase) {
+		this.purchase = purchase;
+	}
+
+	public int getTotalOrder() {
+		return totalOrder;
+	}
+
+	public void setTotalOrder(int totalOrder) {
+		this.totalOrder = totalOrder;
+	}
+	
 	
 }

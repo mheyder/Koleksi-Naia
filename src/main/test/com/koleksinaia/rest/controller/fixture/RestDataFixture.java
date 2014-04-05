@@ -72,8 +72,8 @@ public class RestDataFixture {
 	}
 	
 	/*** SUPPLIER DATA FIXTURE ***/	
-	public static final String SUPPLIER_1_ID = "SR";
-	public static final String SUPPLIER_2_ID = "PINK";
+	public static final String SUPPLIER_1_ID = "SUPP1";
+	public static final String SUPPLIER_2_ID = "SUPP2";
 	public static final String SUPPLIER_1_NAME = "Strawberry";
 	public static final String SUPPLIER_1_CP = "Ririn";
 	public static final String SUPPLIER_1_PHONE = "0812345678";
@@ -120,8 +120,8 @@ public class RestDataFixture {
 	}
 	
 	/*** SUPPLIER DATA FIXTURE ***/	
-	public static final String CUSTOMER_1_ID = "ATI";
-	public static final String CUSTOMER_2_ID = "POPPY";
+	public static final String CUSTOMER_1_ID = "CUST1";
+	public static final String CUSTOMER_2_ID = "CUST2";
 	public static final String CUSTOMER_1_NAME = "Mbak Ati";
 	public static final String CUSTOMER_1_PHONE = "0812345678";
 	public static final String CUSTOMER_1_BBM = "AA34DF";

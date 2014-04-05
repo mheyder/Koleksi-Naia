@@ -20,17 +20,29 @@ import org.hibernate.annotations.CascadeType;
 public class Payment {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.TABLE)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name = "payment_id", unique = true)
 	private int id;
 	
 	@Column(name = "payment_date", nullable = false)
 	private Date date;
 	
-	@Column(name = "payment_total")
-	private long total;
+	@Column(name = "payment_order_count", nullable = false)
+	private int orderCount;
 	
-	@Column(name = "shipping_info")
+	@Column(name = "payment_order_price", nullable = false)
+	private long orderPrice;
+	
+	@Column(name = "payment_shipping_price")
+	private long shippingPrice;
+	
+	@Column(name = "payment_other_price")
+	private long otherPrice;
+	
+	@Column(name = "payment_total_price")
+	private long totalPrice;
+	
+	@Column(name = "payment_info")
 	private String info;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -39,7 +51,10 @@ public class Payment {
 	private Customer customer;
 	
 	@OneToMany(mappedBy="payment", fetch = FetchType.LAZY)
-	private Set<Order> Orders;
+	private Set<Order> orders;
+	
+	@OneToMany(mappedBy="payment", fetch = FetchType.LAZY)
+	private Set<Shipping> shippings;
 	
 	public Payment() {
 		
@@ -61,12 +76,12 @@ public class Payment {
 		this.date = date;
 	}
 
-	public long getTotal() {
-		return total;
+	public long getTotalPrice() {
+		return totalPrice;
 	}
 
-	public void setTotal(long total) {
-		this.total = total;
+	public void setTotalPrice(long totalPrice) {
+		this.totalPrice = totalPrice;
 	}
 
 	public String getInfo() {
@@ -86,11 +101,51 @@ public class Payment {
 	}
 
 	public Set<Order> getOrders() {
-		return Orders;
+		return orders;
 	}
 
 	public void setOrders(Set<Order> orders) {
-		Orders = orders;
+		this.orders = orders;
+	}
+
+	public int getOrderCount() {
+		return orderCount;
+	}
+
+	public void setOrderCount(int orderCount) {
+		this.orderCount = orderCount;
+	}
+
+	public long getOrderPrice() {
+		return orderPrice;
+	}
+
+	public void setOrderPrice(long orderPrice) {
+		this.orderPrice = orderPrice;
+	}
+
+	public long getShippingPrice() {
+		return shippingPrice;
+	}
+
+	public void setShippingPrice(long shippingPrice) {
+		this.shippingPrice = shippingPrice;
+	}
+
+	public long getOtherPrice() {
+		return otherPrice;
+	}
+
+	public void setOtherPrice(long otherPrice) {
+		this.otherPrice = otherPrice;
+	}
+
+	public Set<Shipping> getShippings() {
+		return shippings;
+	}
+
+	public void setShippings(Set<Shipping> shippings) {
+		this.shippings = shippings;
 	}
 	
 	

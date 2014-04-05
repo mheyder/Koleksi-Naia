@@ -8,23 +8,42 @@ angular.module('koleksiNaia', [
   'koleksiNaia.services',
   'koleksiNaia.directives',
   'koleksiNaia.controllers',
-  'ui.bootstrap'
+  'ui.bootstrap',
+  'dateParser',
+  'dateParserDirective'
 ]).
 config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/dashboard', {templateUrl: 'partials/dashboard.html', controller: 'DashboardCtrl'});
 
-  // ***** ORDERS ***** 
+  // ***** ORDERS *****   
+  $routeProvider.when('/orders', {templateUrl: 'partials/orders/order-list.html', controller: 'OrderListCtrl'});
   $routeProvider.when('/orders/create', {templateUrl: 'partials/orders/order-create.html', controller: 'OrderCreateCtrl'});
-  $routeProvider.when('/orders/search', {templateUrl: 'partials/orders/order-list.html', controller: 'OrderListCtrl'});
-  $routeProvider.when('/orders/:orderId', {templateUrl: 'partials/orders/order-detail.html', controller: 'OrderEditCtrl'});
+  $routeProvider.when('/orders/:orderId', {templateUrl: 'partials/orders/order-detail.html', controller: 'OrderDetailCtrl'});
+  $routeProvider.when('/orders/edit/:orderId', {templateUrl: 'partials/orders/order-form.html', controller: 'OrderDetailCtrl'});
   
-  // ***** PURCHASE and COLLECTION *****
-  $routeProvider.when('/purchase-collection', {templateUrl: 'partials/suppliers/purchase-collection-supplier-list.html', controller: 'SuppListCtrl'});
-  $routeProvider.when('/purchase-collection/:supplierId', {templateUrl: 'partials/suppliers/purchase-collection-list.html', controller: 'SuppOrderCtrl'});
+  // ***** PURCHASE *****
+  $routeProvider.when('/purchases', {templateUrl: 'partials/purchase/purchase-list.html', controller: 'PurchListCtrl'});
+  $routeProvider.when('/purchases/create', {templateUrl: 'partials/purchase/purchase-form.html', controller: 'PurchCreateCtrl'});
+  $routeProvider.when('/purchases/:purchaseId', {templateUrl: 'partials/purchase/purchase-detail.html', controller: 'PurchDetailCtrl'});
+  $routeProvider.when('/purchases/edit/:purchaseId', {templateUrl: 'partials/purchase/purchase-form.html', controller: 'PurchEditCtrl'});
   
-  // ***** Payment and Shipping *****
-  $routeProvider.when('/payment-shipping', {templateUrl: 'partials/customers/payment-shipping-customer-list.html', controller: 'CustListCtrl'});
-  $routeProvider.when('/payment-shipping/:customerId', {templateUrl: 'partials/customers/payment-shipping-list.html', controller: 'CustOrderCtrl'});
+  // ***** COLLECTION *****
+  $routeProvider.when('/collection', {templateUrl: 'partials/collection/collection-list.html', controller: 'CollListCtrl'});
+  $routeProvider.when('/collection/create', {templateUrl: 'partials/collection/collection-form.html', controller: 'CollCreateCtrl'});
+  $routeProvider.when('/collection/:collectionId', {templateUrl: 'partials/collection/collection-detail.html', controller: 'CollDetailCtrl'});
+  $routeProvider.when('/collection/edit/:collectionId', {templateUrl: 'partials/collection/collection-form.html', controller: 'CollEditCtrl'});
+  
+  // ***** PAYMENT *****
+  $routeProvider.when('/payments', {templateUrl: 'partials/payment/payment-list.html', controller: 'PaymListCtrl'});
+  $routeProvider.when('/payments/create', {templateUrl: 'partials/payment/payment-form.html', controller: 'PaymCreateCtrl'});
+  $routeProvider.when('/payments/:paymentId', {templateUrl: 'partials/payment/payment-detail.html', controller: 'PaymDetailCtrl'});
+  $routeProvider.when('/payments/edit/:paymentId', {templateUrl: 'partials/payment/payment-form.html', controller: 'PaymEditCtrl'});
+  
+  // ***** SHIPPING *****
+  $routeProvider.when('/shipping', {templateUrl: 'partials/shipping/shipping-list.html', controller: 'ShipListCtrl'});
+  $routeProvider.when('/shipping/create', {templateUrl: 'partials/shipping/shipping-form.html', controller: 'ShipCreateCtrl'});
+  $routeProvider.when('/shipping/:shippingId', {templateUrl: 'partials/shipping/shipping-detail.html', controller: 'ShipDetailCtrl'});
+  $routeProvider.when('/shipping/edit/:shippingId', {templateUrl: 'partials/shipping/shipping-form.html', controller: 'ShipEditCtrl'});
   
   // ***** SUPPLIER *****
   $routeProvider.when('/suppliers', {templateUrl: 'partials/suppliers/supplier-list.html', controller: 'SuppListCtrl'}); 
@@ -40,3 +59,14 @@ config(['$routeProvider', function($routeProvider) {
   $routeProvider.otherwise({redirectTo: '/dashboard'});
 }]);
 
+angular.module('koleksiNaia.controllers', [
+  'mainController',
+  'orderController',
+  'customerController',
+  'supplierController',
+  'purchaseController',
+  'collectionController',
+  'paymentController',
+  'shippingController',
+  'chieffancypants.loadingBar'
+]);

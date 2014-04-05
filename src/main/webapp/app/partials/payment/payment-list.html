@@ -1,0 +1,61 @@
+<div class="container-fluid theme-showcase" role="main">
+  <h2 class="page-header">Customer Payment</h2>
+    
+  <div class="row">
+    <div class="col-sm-2">
+      <a href="#/payments/create" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Make Payment</a>
+    </div>
+    <div class="col-sm-10">
+      <form class="form-inline pull-right" role="form">
+        <div class="form-group">
+          <label for="startDate">Date from</label>
+          <input id="startDate" class="form-control input-mysize" ng-model="startDate" show-weeks="false" datepicker-popup="d/MM/yy" max="endDate" placeholder="Start Date"/>
+        </div>
+        <div class="form-group">
+          <label for="endDate">to</label>
+          <input id="endDate" class="form-control input-mysize" ng-model="endDate" show-weeks="false" datepicker-popup="d/MM/yy" min="startDate" max="maxDate" placeholder="End Date"/>
+        </div>
+        <div class="form-group">
+          <label class="sr-only" for="customerId">Customer Id</label>
+          <input type="text" class="form-control input-mysize" id="customerId" ng-model="customerId" typeahead="customer.id for customer in customers | filter:$viewValue | limitTo:8" placeholder="Customer Id">
+        </div>
+        <button ng-click="search()" class="btn btn-info">Search  <span class="glyphicon glyphicon-search"></span></button>
+      </form>
+    </div>
+  </div>
+  
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Customer</th>
+          <th>Paid Orders</th>
+          <th>Orders Price</th>
+          <th>Shipping Price</th>
+          <th>Other Price</th>
+          <th>Total Price</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-show="!response.content">
+          <td colspan="8" class="text-center">No Record Found</td>
+        </tr>
+        <tr ng-repeat="payment in response.content">
+          <td>{{payment.date}}</a></td>
+          <td>{{payment.customerName}}</td>
+          <td>{{payment.orderCount}}</td>
+          <td>{{payment.orderPrice}}</td>
+          <td>{{payment.shippingPrice}}</td>
+          <td>{{payment.otherPrice}}</td>
+          <td>{{payment.totalPrice}}</td>
+          <td><a href="#/payments/{{payment.id}}"><span class="glyphicon glyphicon-zoom-in"></span></a></td>
+        </tr>                
+      </tbody>
+    </table>
+  </div>
+  
+  <pagination class="pagination pull-right" on-select-page="changePage(page)" total-items="response.totalItems" page="response.pageNumber" max-size="maxSize" boundary-links="true" rotate="false" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+
+</div>

@@ -1,38 +1,37 @@
-<div class="container theme-showcase" role="main">
-  <h2 class="page-header"><small><a href="#/orders/create">create orders</a></small> Search Order</h2>
+<div class="container-fluid theme-showcase" role="main">
+  <h3 class="page-header">Search Orders</h3>  
   
-  <div class="panel panel-default">
-    <div class="panel-heading">Filter</div>
-    <div class="panel-body">
-      <p>Order Date range
-      <p>Customer
-      <p>Supplier
+  <div class="row">
+    <div class="col-sm-2">
+      <a href="#/orders/create" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span>  Create Orders</a>
+    </div>
+    <div class="col-sm-10">
+      <form class="form-inline pull-right" role="form">
+        <div class="form-group">
+          <label for="sort" class="control-label">Sort by:</label>
+          <select id="sort" class="form-control" ng-model="sort" ng-options="s.value as s.text for s in sorts"></select>
+        </div>
+        <div class="form-group">
+          <label for="startDate">from</label>
+          <input id="startDate" class="form-control input-mysize" ng-model="startDate" show-weeks="false" datepicker-popup="d/MM/yy" max="endDate" placeholder="Start Date"/>
+        </div>
+        <div class="form-group">
+          <label for="endDate">to</label>
+          <input id="endDate" class="form-control input-mysize" ng-model="endDate" show-weeks="false" datepicker-popup="d/MM/yy" min="startDate" max="maxDate" placeholder="End Date"/>
+        </div>
+        <div class="form-group">
+          <label class="sr-only" for="customerId">Customer Id</label>
+          <input type="text" class="form-control input-mysize" id="customerId" ng-model="customerId" typeahead="customer.id for customer in customers | filter:$viewValue | limitTo:8" placeholder="Customer Id">
+        </div>
+         <div class="form-group">
+          <label class="sr-only" for="supplierId">Supplier Id</label>
+          <input type="text" class="form-control input-mysize" id="supplierId" ng-model="supplierId" typeahead="supplier.id for supplier in suppliers | filter:$viewValue | limitTo:8" placeholder="Supplier Id">
+        </div>
+        <button ng-click="search()" class="btn btn-info">Search  <span class="glyphicon glyphicon-search"></span></button>
+        <button ng-click="clear()" class="btn btn-default">Clear</button>
+      </form>
     </div>
   </div>
-  
-  <form class="form-inline pull-right" role="form">
-    <div class="form-group">
-      <label for="sort">Sort by:</label>
-      <select id="sort" class="form-control">
-          <option>Latest Order</option>
-          <option>Newest Order</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-        </select>
-    </div>
-    <div class="form-group">
-      <ul class="pagination pull-right">
-        <li><a href="#">&laquo;</a></li>
-        <li><a href="#">1</a></li>
-        <li><a href="#">2</a></li>
-        <li><a href="#">3</a></li>
-        <li><a href="#">4</a></li>
-        <li><a href="#">5</a></li>
-        <li><a href="#">&raquo;</a></li>
-      </ul>
-    </div>
-  </form>
   
   <div class="table-responsive">
     <table class="table table-striped">
@@ -40,38 +39,36 @@
         <tr>
           <th>Date</th>
           <th>Customer</th>
-          <th>Dropship</th>
           <th>Supplier</th>
           <th>Item</th>
-          <th>Colour</th>
           <th>Cost</th>
-          <th>Price</th>
-          <th>Ready</th>
+          <th>Price</th>          
           <th>Bought</th>
-          <th>Sent</th>
+          <th>Ready</th>
           <th>Paid</th>
-          <th>Edit</th>
+          <th>Sent</th>          
+          <th></th>
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="order in orders">
-          <td>{{order.date}}</td>
-          <td>{{order.customer.id}}</td>
-          <td>{{order.dropship}}</td>
-          <td>{{order.supplier.id}}</td>
-          <td>{{order.itemName}}</td>
-          <td>{{order.itemType}}</td>
+        <tr ng-show="!response.content">
+          <td colspan="11" class="text-center">No Record Found</td>
+        </tr>
+        <tr ng-repeat="order in response.content">
+          <td>{{order.date | date:'dd/MM/yy'}}</td>
+          <td>{{order.customerId}}<span ng-show="order.dropship"> ({{order.dropship}})</span></td>
+          <td>{{order.supplierId}}</td>
+          <td>{{order.itemName}}<span ng-show="order.itemType"> ({{order.itemType}})</span></td>
           <td>{{order.cost}}</td>
           <td>{{order.price}}</td>
-          <td>v</td>
-          <td>v</td>
-          <td>v</td>
-          <td>v</td>
-          <td><a href="#/orders/1">x</a></td>
+          <td>{{order.purchased | checkmark}}</td>
+          <td>{{order.collected | checkmark}}</td>
+          <td>{{order.paid | checkmark}}</td>
+          <td>{{order.shipped | checkmark}}</td>
+          <td><a href="#/orders/{{order.id}}"><span class="glyphicon glyphicon-zoom-in"></span></a></td>
         </tr>                
       </tbody>
     </table>
   </div>
- 
-  <a href="#/customers/create" class="btn btn-primary">New Customer</a>
+  <pagination class="pagination pull-right" on-select-page="changePage(page)" total-items="response.totalItems" page="response.pageNumber" max-size="maxSize" boundary-links="true" rotate="false" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
 </div>
